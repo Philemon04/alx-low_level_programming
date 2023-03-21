@@ -1,7 +1,13 @@
 #include "main.h"
 
-int _islower(int c){
-	if(c>='a' && c<='z')
+/*
+ * _islower() - check if c is a letter
+ * return 1 or 0
+ */
+
+int _islower(int c)
+{
+	if(c >= 'a' && c <= 'z')
 		return (1);
 	else
 		return (0);

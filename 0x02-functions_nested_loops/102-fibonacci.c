@@ -1,5 +1,9 @@
 #include <stdio.h>
 
+/*
+ * main - fibonnaci
+ */
+
 int main(void)
 {
 	int count;

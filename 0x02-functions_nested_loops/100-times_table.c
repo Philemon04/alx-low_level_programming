@@ -1,5 +1,10 @@
 #include "main.h"
 
+/*
+ * print_times-table - prints time table
+ * return void
+ */
+
 void print_times_table(int n)
 {
 	int num, mult, prod;

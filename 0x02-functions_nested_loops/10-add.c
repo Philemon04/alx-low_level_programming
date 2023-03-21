@@ -1,7 +1,11 @@
 #include "main.h"
 
-int add(int, int)
+/*
+ * add - pretty straightforward
+ */
+
+int add(int n, int m)
 {
-	_putchar(int+int);
+	_putchar(m + n);
 	return (0);
 }
