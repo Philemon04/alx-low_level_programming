@@ -1,11 +1,10 @@
 #include "main.h"
 /**
  * print_number - prints an integer
- * @n: input integer parameter
+ * @n:.input integer parameter
  *
- * Return: void
- **/
-
+ *Cool code
+ */
 void print_number(int n)
 {
 	unsigned int i = n;
