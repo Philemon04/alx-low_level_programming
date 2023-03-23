@@ -5,7 +5,7 @@
  * @n: no of times that _ will be printed
  *
  * Return: void
- */
+ **/
 
 void print_line(int n)
 {
