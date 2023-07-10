@@ -1,46 +1,70 @@
 #include "main.h"
-#define BUFFERSIZE 1204
+#include <stdio.h>
 
 /**
- * main - cps contents of one file to another
- * @ac: arguement count
- * @av: arguement list: file names
- * Return: 0;
+ * error_file - checks if files can be opened.
+ * @file_from: file_from.
+ * @file_to: file_to.
+ * @argv: arguments vector.
+ * Return: no return.
  */
-int main(int ac, char **av)
+void error_file(int file_from, int file_to, char *argv[])
 {
-	int fd, fd_dest, read_file, check;
-	char buffer[BUFFERSIZE];
-	/*Opening a file for writing by the owner*/
-	mode_t mode_file = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
-
-	/*Block of algorithm for validate data*/
-	if (ac != 3)
-	/*print to a file descriptor */
-		printf(STDERR_FILENO, "Usage: cp file_from file_to\n"), exit(97);
-	fd = open(av[1], O_RDONLY);
-	if (fd == -1)
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]), exit(98);
-	fd_dest = open(av[2], O_WRONLY | O_CREAT | O_TRUNC, mode_file);
-	if (fd_dest == -1)
-		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]), exit(99);
-
-	read_file = check = 1;
-	while (read_file)
+	if (file_from == -1)
 	{
-		read_file = read(fd, buffer, BUFFERSIZE);
-		if (read_file == -1) /*If can't read*/
-			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]), exit(98);
-		if (read_file > 0)
-		{
-			check = write(fd_dest, buffer, read_file);																if (check == -1) /*If can't write*/																		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]), exit(99);
-		}
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		exit(98);
 	}
-	check = close(fd); /*close file*/
-	if (check == -1)
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd), exit(100);
-	check = close(fd_dest);
-	if (check == -1)
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_dest), exit(100);
+	if (file_to == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+		exit(99);
+	}
+}
+
+/**
+ * main - check the code for Holberton School students.
+ * @argc: number of arguments.
+ * @argv: arguments vector.
+ * Return: Always 0.
+ */
+int main(int argc, char *argv[])
+{
+	int file_from, file_to, err_close;
+	ssize_t nchars, nwr;
+	char buf[1024];
+
+	if (argc != 3)
+	{
+		dprintf(STDERR_FILENO, "%s\n", "Usage: cp file_from file_to");
+		exit(97);
+	}
+
+	file_from = open(argv[1], O_RDONLY);
+	file_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0664);
+	error_file(file_from, file_to, argv);
+
+	nchars = 1024;
+	while (nchars == 1024)
+	{
+		nchars = read(file_from, buf, 1024);
+		if (nchars == -1)																				error_file(-1, 0, argv);
+		nwr = write(file_to, buf, nchars);
+		if (nwr == -1)
+			error_file(0, -1, argv);
+	}
+	err_close = close(file_from);
+	if (err_close == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", file_from);
+		exit(100);
+	}
+	
+	err_close = close(file_to);
+	if (err_close == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", file_from);
+		exit(100);
+	}
 	return (0);
 }
