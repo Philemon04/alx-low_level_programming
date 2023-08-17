@@ -18,6 +18,6 @@ int sum_dlistint(dlistint_t *head)
 		sum = sum + head->n;
 		head = head->next;
 	}
-	
+
 	return (sum);
 }
